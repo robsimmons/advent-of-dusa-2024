@@ -1,0 +1,60 @@
+# AOC 2024 Day 1, Part 1
+
+# npx dusa src/1a.dusa -f data/day1-test.json -qanswer
+
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+
+# Inputs
+nRows is (length Root) :- root 0 is Root.
+fact List Index is Value :-
+   field (root 0) Index is Arr,
+   field Arr List is Value.
+
+# Reconstitute the lists as conslists
+buildList List Index is nil :-
+   length (root 0) is Index,
+   fact List _ is _.
+buildList List I' is (cons X Xs) :-
+   buildList List I is Xs,
+   minus I 1 == I',
+   fact List I' is X.
+list List is Xs :- buildList List 0 is Xs.
+
+# Quicksort on conslists
+#lazy sort
+sort nil is nil.
+sort (cons X Xs) is Sorted :-
+   partition X Xs is (tuple As Bs),
+   append (sort As) (cons X (sort Bs)) is Sorted.
+
+#lazy partition
+partition X nil is (tuple nil nil).
+partition X (cons Y Ys) is (tuple (cons Y As) Bs) :-
+   partition X Ys is (tuple As Bs),
+   Y <= X.
+partition X (cons Y Ys) is (tuple As (cons Y Bs)) :-
+   partition X Ys is (tuple As Bs),
+   Y > X.
+
+#lazy append
+append nil Ys is Ys.
+append (cons X Xs) Ys is (cons X (append Xs Ys)).
+
+# Calculate diffs
+#lazy absDiff
+absDiff X Y is (minus X Y) :- X >= Y.
+absDiff X Y is (minus Y X) :- Y >= X.
+
+#lazy diffs
+diffs nil nil is nil.
+diffs (cons X Xs) (cons Y Ys) is (cons (absDiff X Y) Zs) :-
+   diffs Xs Ys is Zs.
+
+# Sum list
+#lazy sumList
+sumList nil is 0.
+sumList (cons X Xs) is (plus X (sumList Xs)).
+
+answer is (sumList (diffs (sort (list 0)) (sort (list 1)))).
+
