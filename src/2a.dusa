@@ -1,0 +1,42 @@
+# AOC 2024 Day 2, Part 1
+
+# npx dusa src/2a.dusa -f data/day2-test.json -qaa_answer
+
+# Math
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+#builtin INT_TIMES times
+#builtin NAT_SUCC s
+
+# Parsing
+report Line Index is Value :-
+   root 0 is Root,
+   field Root Line is LineRoot,
+   field LineRoot Index is Value.
+
+# Computing one-step differences
+diff Line (minus First Second) :-
+   report Line A is First,
+   report Line (s A) is Second.
+
+# # SAFE DIFFERENCES # #
+
+# Levels must be all increasing or all decreasing
+safe Line is 0 :- diff Line D1, diff Line D2, D1 > 0, D2 < 0.
+
+# Differences must be at least one
+safe Line is 0 :- diff Line D, D == 0.
+
+# Differences must be at most three
+safe Line is 0 :- diff Line D, D > 3.
+safe Line is 0 :- diff Line D, D < -3.
+
+# Otherwise, it's safe
+safe Line is? 1 :- report Line _ is _.
+
+# # ACCUM # #
+accum 0 is 0.
+accum (s N) is (plus X Y) :- accum N is X, safe N is Y.
+aa_answer is (accum (length (root 0))).
+
+#demand length _ is _.
