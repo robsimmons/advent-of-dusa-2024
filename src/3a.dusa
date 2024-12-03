@@ -1,0 +1,46 @@
+# AOC 2024 Day 3, Part 1
+
+# npx dusa src/3a.dusa -f data/day3-test.json -qanswer
+
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+#builtin INT_TIMES times
+#builtin STRING_CONCAT concat
+
+digit "0" is 0. digit "1" is 1.
+digit "2" is 2. digit "3" is 3.
+digit "4" is 4. digit "5" is 5.
+digit "6" is 6. digit "7" is 7.
+digit "8" is 8. digit "9" is 9.
+
+three_digit A is N :- 
+   digit A is N.
+three_digit (concat A B) is (plus (times N 10) M) :- 
+   digit A is N, 
+   digit B is M.
+three_digit (concat A B C) is (plus (times N 100) (times M 10) P) :-
+   digit A is N,
+   digit B is M,
+   digit C is P.
+
+num_comma (concat A ",") is N :- three_digit A is N.
+num_close (concat A ")") is N :- three_digit A is N.
+
+maybe_mul Index Rest is First :-
+   num_comma Prefix is First,
+   field _ Index is Str, # field 0 12 is "2,15)..."
+   concat Prefix Rest is Str.
+
+definitely_mul Index is (times First Second) :-
+   num_close Prefix is Second,
+   maybe_mul Index Str is First,
+   concat Prefix _ is Str.
+
+# Accumulate result
+definitely_mul Index is? 0 :- field _ Index is _.
+accum 0 is 0.
+accum (plus Index 1) is (plus Accum N) :- 
+   accum Index is Accum,
+   definitely_mul Index is N.
+answer is N :-
+   length 0 is Len, accum Len is N. 
