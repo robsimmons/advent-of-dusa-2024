@@ -1,6 +1,6 @@
 # AOC 2024 Day 4, Part 2
 
-# npx dusa src/4b.dusa -f data/day4-test.json -cfound
+# npx dusa src/4b.dusa -f data/day4-test.json -canswer
 
 #builtin INT_PLUS plus
 #builtin INT_MINUS minus
@@ -21,4 +21,6 @@ find Dir X Y :-
    char X Y is "A",
    char (plus X DX) (plus Y DY) is "M",
    char (minus X DX) (minus Y DY) is "S".
-found X Y :- find a X Y, find b X Y.
+
+# Answers find "MAS" in both orentations
+answer X Y :- find a X Y, find b X Y.
