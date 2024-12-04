@@ -1,0 +1,33 @@
+# AOC 2024 Day 4, Part 1
+
+# npx dusa src/4a.dusa -f data/day4-test.json -cfound
+
+#builtin INT_PLUS plus
+
+# Parsing
+char X Y is Ch :-
+   root 0 is Root,
+   field Root Y is Row,
+   field Row X is Ch.
+
+# Crossword solving directions
+dir -1 -1. dir -1 0. dir -1 1.
+dir 0 -1. dir 0 1.
+dir 1 -1. dir 1 0. dir 1 1.
+
+find 1 (plus X DX) (plus Y DY) DX DY :- char X Y is "X", dir DX DY.
+find 2 (plus X DX) (plus Y DY) DX DY :- find 1 X Y DX DY, char X Y is "M".
+find 3 (plus X DX) (plus Y DY) DX DY :- find 2 X Y DX DY, char X Y is "A".
+found X Y DX DY :- find 3 X Y DX DY, char X Y is "S".
+
+# Chris's accum algorithm
+
+# index 0.
+# answer_at I is? nothing :- index I.
+# index (plus I 1) :- answer_at I is (some _ _ _ _).
+# answer_at I is? (some X Y DX DY) :- found X Y DX DY, index I.
+# index_of X Y DX DY is I :- answer_at I is (some X Y DX DY).
+# index_of X Y DX DY is? nothing :- found X Y DX DY.
+# #forbid index_of _ _ _ _ is nothing.
+# 
+# answer_count is N :- answer_at N is nothing.

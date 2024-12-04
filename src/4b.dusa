@@ -1,0 +1,24 @@
+# AOC 2024 Day 4, Part 2
+
+# npx dusa src/4b.dusa -f data/day4-test.json -cfound
+
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+
+# Parsing
+char X Y is Ch :-
+   root 0 is Root,
+   field Root Y is Row,
+   field Row X is Ch.
+
+# Crossword solving directions
+dir a -1 -1. dir a 1 1. # upleft == downright
+dir b -1 1. dir b 1 -1. # upright == downleft
+
+# Finding "MAS" in a particular orientation
+find Dir X Y :-
+   dir Dir DX DY,
+   char X Y is "A",
+   char (plus X DX) (plus Y DY) is "M",
+   char (minus X DX) (minus Y DY) is "S".
+found X Y :- find a X Y, find b X Y.
