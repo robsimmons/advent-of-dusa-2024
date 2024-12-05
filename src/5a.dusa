@@ -1,0 +1,41 @@
+# AOC 2024 Day 5, Part 1
+
+# npx dusa src/5a.dusa -f data/day5-test.json -qanswer
+
+#builtin INT_PLUS plus
+
+order_rule A B :-
+   field _ "rules" is Rules,
+   field Rules _ is Rule,
+   field Rule 0 is A,
+   field Rule 1 is B.
+
+update U I is P :-
+   field _ "updates" is Updates,
+   field Updates U is Update,
+   field Update I is P.
+update_length U is Len :-
+   field _ "updates" is Updates,
+   field Updates U is Update,
+   length Update is Len.
+
+correctly_ordered U is? tt :- update U _ is _.
+correctly_ordered U is ff :- 
+   update U I1 is P1,
+   update U I2 is P2,
+   I1 < I2,
+   order_rule P2 P1.
+
+value U is 0 :- correctly_ordered U is ff.
+value U is Middle :- 
+   correctly_ordered U is tt,
+   update U I is Middle,
+   update_length U is (plus I I 1).
+
+accum 0 is 0.
+accum (plus U 1) is (plus Accum (value U)) :- 
+   accum U is Accum.
+answer is Answer :-
+   field _ "updates" is Updates,
+   length Updates is Len,
+   accum Len is Answer.

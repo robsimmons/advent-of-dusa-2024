@@ -1,0 +1,11 @@
+# npx dusa src/5prelim.dusa -f data/day5-rob.json -cincon
+
+edge A B :-
+   field _ "rules" is Rules,
+   field Rules _ is Rule,
+   field Rule 0 is A,
+   field Rule 1 is B.
+path A B :- edge A B.
+path A C :- edge A B, path B C.
+
+incon A B :- path A B, path B A.
