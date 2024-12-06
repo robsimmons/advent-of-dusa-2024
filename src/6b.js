@@ -74,8 +74,10 @@ for (const blockSol of blockages) {
   dusa.assert(...facts);
   dusa.assert({ name: "blockage", value: { name: "tuple", args: [x, y] } });
   if (dusa.solution) {
-    console.log(`${x},${y} cycles`);
+    console.log(`A blockage at ${x},${y} causes a loop`);
     accum += 1;
+  } else {
+    console.log(`A blockage at ${x},${y} does not cause a loop`);
   }
 }
-console.log(accum);
+console.log(`There are ${accum} locations where you can cause the a loop.`);
