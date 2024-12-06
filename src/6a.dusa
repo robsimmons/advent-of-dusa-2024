@@ -1,0 +1,37 @@
+# AOC 2024 Day 6, Part 1
+
+# npx dusa src/6a.dusa -f data/day6-test.json -canswer
+
+#builtin NAT_SUCC s
+#builtin INT_PLUS plus
+
+# Parsing
+cell X Y is blocked :-
+   root 0 is Root,
+   field Root Y is Line,
+   field Line X is "#".
+cell X Y is clear :-
+   root 0 is Root,
+   field Root Y is Line,
+   field Line X is Ch, Ch != "#".
+step 0 X Y 0 -1 :-
+   root 0 is Root,
+   field Root Y is Line,
+   field Line X is "^".
+
+# Core logic (no cycle detection!)
+right_turn 0 1 -1 0.
+right_turn -1 0 0 -1.
+right_turn 0 -1 1 0.
+right_turn 1 0 0 1.
+
+step (s N) (plus X DX) (plus Y DY) DX DY :-
+   step N X Y DX DY,
+   cell (plus X DX) (plus Y DY) is clear.
+step (s N) X Y DX' DY' :-
+   step N X Y DX DY,
+   cell (plus X DX) (plus Y DY) is blocked,
+   right_turn DX DY DX' DY'.
+
+# Which cells were visited?
+answer X Y :- step _ X Y _ _.
