@@ -1,0 +1,45 @@
+# AOC 2024 Day 7, Part 1
+
+# npx dusa src/7a.dusa -f data/day7-test.json -n0 -qanswer
+
+# Simple version, only prunes branches where the accumulation gets too large.
+# Runs in about 30 seconds on my machine.
+
+#builtin INT_PLUS plus
+#builtin INT_TIMES times
+
+eqn_goal N is V :-
+  root 0 is Root,
+  field Root N is R,
+  field R "test" is V.
+eqn_item N I is V :-
+  root 0 is Root,
+  field Root N is R,
+  field R "eqn" is Eqn,
+  field Eqn I is V.  
+eqn_length N is Len :-
+  root 0 is Root,
+  field Root N is R,
+  field R "eqn" is Eqn,
+  length Eqn is Len.
+
+possible_accum Eqn 1 V :- eqn_item Eqn 0 is V.
+possible_accum Eqn (plus I 1) (plus Accum (eqn_item Eqn I)) :-
+   possible_accum Eqn I Accum, 
+   Accum <= eqn_goal Eqn.
+possible_accum Eqn (plus I 1) (times Accum (eqn_item Eqn I)) :-
+   possible_accum Eqn I Accum, 
+   Accum <= eqn_goal Eqn.
+
+accum 0 is 0.
+accum (plus Eqn 1) is? Accum :- 
+   accum Eqn is Accum,
+   eqn_length Eqn is _.
+accum (plus Eqn 1) is (plus Accum (eqn_goal Eqn)) :-
+   accum Eqn is Accum,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn (eqn_length Eqn) Goal.
+answer is Accum :-
+   root 0 is Root,
+   length Root is Len,
+   accum Len is Accum.

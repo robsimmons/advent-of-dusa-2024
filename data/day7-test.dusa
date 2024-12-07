@@ -1,0 +1,65 @@
+root 0 is 0.
+length 0 is 9.
+field 0 0 is 1.
+field 1 "test" is 190.
+field 1 "eqn" is 2.
+length 2 is 2.
+field 2 0 is 10.
+field 2 1 is 19.
+field 0 1 is 3.
+field 3 "test" is 3267.
+field 3 "eqn" is 4.
+length 4 is 3.
+field 4 0 is 81.
+field 4 1 is 40.
+field 4 2 is 27.
+field 0 2 is 5.
+field 5 "test" is 83.
+field 5 "eqn" is 6.
+length 6 is 2.
+field 6 0 is 17.
+field 6 1 is 5.
+field 0 3 is 7.
+field 7 "test" is 156.
+field 7 "eqn" is 8.
+length 8 is 2.
+field 8 0 is 15.
+field 8 1 is 6.
+field 0 4 is 9.
+field 9 "test" is 7290.
+field 9 "eqn" is 10.
+length 10 is 4.
+field 10 0 is 6.
+field 10 1 is 8.
+field 10 2 is 6.
+field 10 3 is 15.
+field 0 5 is 11.
+field 11 "test" is 161011.
+field 11 "eqn" is 12.
+length 12 is 3.
+field 12 0 is 16.
+field 12 1 is 10.
+field 12 2 is 13.
+field 0 6 is 13.
+field 13 "test" is 192.
+field 13 "eqn" is 14.
+length 14 is 3.
+field 14 0 is 17.
+field 14 1 is 8.
+field 14 2 is 14.
+field 0 7 is 15.
+field 15 "test" is 21037.
+field 15 "eqn" is 16.
+length 16 is 4.
+field 16 0 is 9.
+field 16 1 is 7.
+field 16 2 is 18.
+field 16 3 is 13.
+field 0 8 is 17.
+field 17 "test" is 292.
+field 17 "eqn" is 18.
+length 18 is 4.
+field 18 0 is 11.
+field 18 1 is 6.
+field 18 2 is 16.
+field 18 3 is 20.

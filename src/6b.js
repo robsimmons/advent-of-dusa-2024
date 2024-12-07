@@ -1,4 +1,4 @@
-// node src/day6.js < data/day6-test.txt
+// node src/6b.js < data/day6-test.txt
 
 import { readFileSync } from "fs";
 import { jsonToFacts } from "./util.js";
@@ -63,7 +63,7 @@ step (s N) X Y DX' DY' :-
    right_turn DX DY DX' DY'.
 
 next N is? tt :- step N _ _ _ _.
-next N is ff :- step N X Y DX DY, step N' X Y DX DY, N > N'.
+next N is ff :- step N X Y DX DY, N > 100, step N' X Y DX DY, N > N'.
 #demand next N is ff.
 `);
 
