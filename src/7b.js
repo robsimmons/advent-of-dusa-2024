@@ -68,9 +68,9 @@ accum 1 is V :- eqn_item 0 is V.
 
 # Continue with single steps if the target is between low water & high water
 next I V :-
-   eqn_length is Len,
-   eqn_goal is Goal,
-   accum I is V.
+    eqn_length is Len,
+    eqn_goal is Goal,
+    accum I is V.
 
 accum (s I) is? (plus V (eqn_item I)) :- next I V.
 accum (s I) is? (times V (eqn_item I)) :- next I V.
