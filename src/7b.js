@@ -20,16 +20,13 @@ const seeker = compile(`
 
 #lazy find_mag
 find_mag N Mag is Mag :- Mag > N, Mag <= times N 10.
-find_mag N Mag is Mag' :-
-   Mag <= N,
-   find_mag N (times Mag 10) is Mag'.
+find_mag N Mag is Mag' :- Mag <= N, find_mag N (times Mag 10) is Mag'.
 
 #lazy magnitude
 magnitude N is (find_mag N 10).
 
 #lazy concat
-concat A B is (plus (times A Mag) B) :-
-   magnitude B is Mag.
+concat A B is (plus (times A Mag) B) :- magnitude B is Mag.
 
 #lazy max
 max A B C is A :- A >= B, A >= C.
@@ -47,21 +44,19 @@ min A B C is C :- C <= A, C <= B.
 # towards cutting off infeasible search paths early.
 high_water I V I is V :- accum I is V.
 high_water I' V' (s I) is VNext :-
-   high_water I' V' I is V,
-   max 
-      (plus V (eqn_item I))
-      (times V (eqn_item I))
-      (concat V (eqn_item I))
-   is VNext.
+    high_water I' V' I is V,
+    max (plus V (eqn_item I))
+        (times V (eqn_item I))
+        (concat V (eqn_item I))
+    is VNext.
 
 low_water I V I is V :- accum I is V.
 low_water I' V' (s I) is VNext :-
-   low_water I' V' I is V,
-   min
-      (plus V (eqn_item I))
-      (times V (eqn_item I))
-      (concat V (eqn_item I))
-   is VNext.
+    low_water I' V' I is V,
+    min (plus V (eqn_item I))
+        (times V (eqn_item I))
+        (concat V (eqn_item I))
+    is VNext.
 
 # Accumulation always starts with the value in index 0
 accum 1 is V :- eqn_item 0 is V.
