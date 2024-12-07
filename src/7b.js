@@ -43,6 +43,8 @@ min A B C is C :- C <= A, C <= B.
 
 # # SEARCH # #
 
+# Always calculate the maximum and minimum possible outcomes with an eye
+# towards cutting off infeasible search paths early.
 high_water I V I is V :- accum I is V.
 high_water I' V' (s I) is VNext :-
    high_water I' V' I is V,
@@ -65,8 +67,9 @@ low_water I' V' (s I) is VNext :-
 accum 1 is V :- eqn_item 0 is V.
 
 # Bail immediately if low water or high water is infeasible
-#forbid accum I is V, low_water I V eqn_length > eqn_goal.
-#forbid accum I is V, high_water I V eqn_length < eqn_goal.
+#forbid accum I is V, eqn_length is Len, eqn_goal is Goal, low_water I V Len is Low, Low > Goal.
+#forbid accum I is V, eqn_length is Len, eqn_goal is Goal, low_water I V Len is Low, Low > Goal.
+#forbid accum I is V, eqn_length is Len, eqn_goal is Goal, high_water I V Len < Goal.
 
 # Continue with single steps if the target is between low water & high water
 next I V :-
@@ -78,7 +81,9 @@ accum (s I) is? (plus V (eqn_item I)) :- next I V.
 accum (s I) is? (times V (eqn_item I)) :- next I V.
 accum (s I) is? (concat V (eqn_item I)) :- next I V, use_concat.
 
-#demand accum eqn_length is eqn_goal.
+#demand eqn_length is _.
+#demand eqn_goal is _.
+#demand eqn_item _ is _.
 `);
 
 let part1 = 0;
@@ -98,6 +103,7 @@ for (const [i, { test, eqn }] of json.entries()) {
     dusa.assert({ name: "use_concat" });
     if (dusa.solution) {
       console.log(`Success w/concat for test ${i}: got ${test}`);
+      // console.log(dusa.solution.facts());
       part2 += test;
     } else {
       console.log(`Failure for test ${i}: did not get ${test}`);
