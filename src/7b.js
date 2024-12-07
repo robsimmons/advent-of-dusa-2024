@@ -1,7 +1,6 @@
 // node src/7b.js < data/day7-test.txt
 
 import { readFileSync } from "fs";
-import { jsonToFacts } from "./util.js";
 import { compile, Dusa } from "dusa";
 
 const json = readFileSync(0, "utf-8")
@@ -44,7 +43,7 @@ min A B C is C :- C <= A, C <= B.
 
 # # SEARCH # #
 
-high_water I V I is V :- possible_accum I V.
+high_water I V I is V :- accum I is V.
 high_water I' V' (s I) is VNext :-
    high_water I' V' I is V,
    max 
@@ -53,7 +52,7 @@ high_water I' V' (s I) is VNext :-
       (concat V (eqn_item I))
    is VNext.
 
-low_water I V I is V :- possible_accum I V.
+low_water I V I is V :- accum I is V.
 low_water I' V' (s I) is VNext :-
    low_water I' V' I is V,
    min
@@ -63,46 +62,27 @@ low_water I' V' (s I) is VNext :-
    is VNext.
 
 # Accumulation always starts with the value in index 0
-possible_accum 1 V :- eqn_item 0 is V.
+accum 1 is V :- eqn_item 0 is V.
 
-# Finish immediately if low water or high water is finish
-possible_accum Len Goal :-
-   eqn_length is Len,
-   eqn_goal is Goal,
-   possible_accum I V,
-   low_water I V Len is Goal.
-possible_accum Len Goal :-
-   eqn_length is Len,
-   eqn_goal is Goal,
-   possible_accum I V,
-   high_water I V Len is Goal.
+# Bail immediately if low water or high water is infeasible
+#forbid accum I is V, low_water I V eqn_length > eqn_goal.
+#forbid accum I is V, high_water I V eqn_length < eqn_goal.
 
 # Continue with single steps if the target is between low water & high water
-possible_accum (plus I 1) (plus V (eqn_item I)) :-
+next I V :-
    eqn_length is Len,
    eqn_goal is Goal,
-   possible_accum I V, 
-   low_water I V Len < Goal,
-   high_water I V Len > Goal.
-possible_accum (plus I 1) (times V (eqn_item I)) :-
-   eqn_length is Len,
-   eqn_goal is Goal,
-   possible_accum I V, 
-   low_water I V Len < Goal,
-   high_water I V Len > Goal.
-possible_accum (plus I 1) (concat V (eqn_item I)) :-
-   eqn_length is Len,
-   eqn_goal is Goal,
-   possible_accum I V,
-   low_water I V Len < Goal,
-   high_water I V Len > Goal.
+   accum I is V.
 
-#forbid
-   eqn_goal is Goal,
-   possible_accum eqn_length Goal.
+accum (s I) is? (plus V (eqn_item I)) :- next I V.
+accum (s I) is? (times V (eqn_item I)) :- next I V.
+accum (s I) is? (concat V (eqn_item I)) :- next I V, use_concat.
+
+#demand accum eqn_length is eqn_goal.
 `);
 
-let accum = 0;
+let part1 = 0;
+let part2 = 0;
 for (const [i, { test, eqn }] of json.entries()) {
   const dusa = new Dusa(seeker);
   dusa.assert(
@@ -110,11 +90,19 @@ for (const [i, { test, eqn }] of json.entries()) {
     { name: "eqn_goal", value: test },
     ...eqn.map((value, i) => ({ name: "eqn_item", args: [i], value }))
   );
-  if (!dusa.solution) {
-    console.log(`Success for test ${i}: got ${test}`);
-    accum += test;
+  if (dusa.solution) {
+    console.log(`Success w/o concat for test ${i}: got ${test}`);
+    part1 += test;
+    part2 += test;
   } else {
-    console.log(`Failure for test ${i}: did not get ${test}`);
+    dusa.assert({ name: "use_concat" });
+    if (dusa.solution) {
+      console.log(`Success w/concat for test ${i}: got ${test}`);
+      part2 += test;
+    } else {
+      console.log(`Failure for test ${i}: did not get ${test}`);
+    }
   }
 }
-console.log(`Answer: ${accum}`);
+console.log(`Part 1 answer: ${part1}`);
+console.log(`Part 2 answer: ${part2}`);
