@@ -1,0 +1,30 @@
+# AOC 2024 Day 5, Part 1
+
+# npx dusa src/8a.dusa -f data/day8-test.json -cantinode
+
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+
+width is W :-
+    root 0 is Root,
+    field Root 0 is FirstLine,
+    length FirstLine is W.
+height is H :-
+    root 0 is Root,
+    length Root is H.
+tower X Y is Ch :-
+    root 0 is Root,
+    field Root Y is Line,
+    field Line X is Ch, Ch != ".".
+
+reflection X Y A :-
+    tower X1 Y1 is A,
+    tower X2 Y2 is A,
+    tuple X1 Y1 != tuple X2 Y2,
+    X == plus X2 (minus X2 X1),
+    Y == plus Y2 (minus Y2 Y1).
+
+antinode X Y :-
+    reflection X Y _,
+    0 <= X, X < width,
+    0 <= Y, Y < height.
