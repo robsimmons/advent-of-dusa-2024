@@ -38,7 +38,7 @@ gather_to_sort U I is (cons P Ps) :-
 to_sort U is P :-
    gather_to_sort U 0 is P.
 
-# Insertion sort for conslists
+# Selection sort for conslists
 #lazy find_min
 find_min Q nil is (tuple Q nil).
 find_min Q (cons P Ps) is (tuple R (cons P Rs)) :-

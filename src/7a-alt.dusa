@@ -1,0 +1,95 @@
+# AOC 2024 Day 7, Part 1 (Alternate)
+
+# npx dusa src/7a-alt.dusa -f data/day7-test.json -n0 -qanswer
+
+# More complex, prunes branches much more aggressively when they fall outside
+# a low-water/high-water mark; designed this improvement to try to coax more
+# performance out of the Part 2 solution. Ultimately saves a couple seconds on
+# the full input for me, just a small percentage improvement.
+
+# # SOME MATH # # 
+
+#builtin INT_PLUS plus
+#builtin INT_TIMES times
+#builtin NAT_SUCC s
+
+#lazy max
+max A B is A :- A >= B.
+max A B is B :- B >= A.
+
+#lazy min
+min A B is A :- A <= B.
+min A B is B :- B <= A.
+
+# # PARSING # #
+
+eqn_goal N is V :-
+  root 0 is Root,
+  field Root N is R,
+  field R "test" is V.
+eqn_item N I is V :-
+  root 0 is Root,
+  field Root N is R,
+  field R "eqn" is Eqn,
+  field Eqn I is V.  
+eqn_length N is Len :-
+  root 0 is Root,
+  field Root N is R,
+  field R "eqn" is Eqn,
+  length Eqn is Len.
+
+# # SEARCH # #
+
+high_water Eqn I V I is V :- possible_accum Eqn I V.
+high_water Eqn I' V' (s I) is VNext :-
+   high_water Eqn I' V' I is V,
+   max (plus V (eqn_item Eqn I))
+       (times V (eqn_item Eqn I))
+   is VNext.
+
+low_water Eqn I V I is V :- possible_accum Eqn I V.
+low_water Eqn I' V' (s I) is VNext :-
+   low_water Eqn I' V' I is V,
+   min (plus V (eqn_item Eqn I))
+       (times V (eqn_item Eqn I))
+   is VNext.
+
+# Finish immediately if low water or high water is finish
+possible_accum Eqn Len Goal :-
+   eqn_length Eqn is Len,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn I V,
+   low_water Eqn I V Len is Goal.
+possible_accum Eqn Len Goal :-
+   eqn_length Eqn is Len,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn I V,
+   high_water Eqn I V Len is Goal.
+
+# Continue with single steps if the target is between low water & high water
+possible_accum Eqn 1 V :- eqn_item Eqn 0 is V.
+possible_accum Eqn (plus I 1) (plus V (eqn_item Eqn I)) :-
+   eqn_length Eqn is Len,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn I V, 
+   low_water Eqn I V Len < Goal,
+   high_water Eqn I V Len > Goal.
+possible_accum Eqn (plus I 1) (times V (eqn_item Eqn I)) :-
+   eqn_length Eqn is Len,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn I V, 
+   low_water Eqn I V Len < Goal,
+   high_water Eqn I V Len > Goal.
+
+accum 0 is 0.
+accum (plus Eqn 1) is? Accum :- 
+   accum Eqn is Accum,
+   eqn_length Eqn is _.
+accum (plus Eqn 1) is (plus Accum (eqn_goal Eqn)) :-
+   accum Eqn is Accum,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn (eqn_length Eqn) Goal.
+answer is Accum :-
+   root 0 is Root,
+   length Root is Len,
+   accum Len is Accum.

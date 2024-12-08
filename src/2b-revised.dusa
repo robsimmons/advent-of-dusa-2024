@@ -1,6 +1,6 @@
 # AOC 2024 Day 2, Part 2
 
-# npx dusa src/2b.dusa -f data/day2-test.json -chasSafe
+# npx dusa src/2b-revised.dusa -f data/day2-rob.json -chasSafe
 
 # Math
 #builtin INT_PLUS plus
@@ -50,4 +50,4 @@ safe Line Drop is ff :- diff Line Drop D, D < -3.
 
 # Otherwise, it's safe
 safe Line Drop is? tt :- report Line Drop _ is _.
-hasSafe Line is 1 :- safe Line _ is tt.
+hasSafe Line :- safe Line _ is tt.
