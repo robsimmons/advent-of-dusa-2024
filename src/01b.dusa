@@ -1,0 +1,63 @@
+# AOC 2024 Day 1, Part 2
+
+# npx dusa src/01b.dusa -f data/day01-test.json -qanswer
+
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+#builtin INT_TIMES times
+
+# Inputs
+nRows is (length Root) :- root 0 is Root.
+fact List Index is Value :-
+   field (root 0) Index is Arr,
+   field Arr List is Value.
+
+# Reconstitute the lists as conslists
+buildList List Index is nil :-
+   length (root 0) is Index,
+   fact List _ is _.
+buildList List I' is (cons X Xs) :-
+   buildList List I is Xs,
+   minus I 1 == I',
+   fact List I' is X.
+list List is Xs :- buildList List 0 is Xs.
+
+# Quicksort on conslists
+#lazy sort
+sort nil is nil.
+sort (cons X Xs) is Sorted :-
+   partition X Xs is (tuple As Bs),
+   append (sort As) (cons X (sort Bs)) is Sorted.
+
+#lazy partition
+partition X nil is (tuple nil nil).
+partition X (cons Y Ys) is (tuple (cons Y As) Bs) :-
+   partition X Ys is (tuple As Bs),
+   Y <= X.
+partition X (cons Y Ys) is (tuple As (cons Y Bs)) :-
+   partition X Ys is (tuple As Bs),
+   Y > X.
+
+#lazy append
+append nil Ys is Ys.
+append (cons X Xs) Ys is (cons X (append Xs Ys)).
+
+# Get counts of numbers in the second list
+generateCounts Number (plus AlreadySeen 1) Xs :-
+   generateCounts Number AlreadySeen (cons Number Xs).
+count Number is AlreadySeen :- 
+   generateCounts Number AlreadySeen Xs, Xs != cons Number _.
+generateCounts X 1 Xs :-
+   generateCounts Number _ (cons X Xs), X != Number.
+generateCounts X 1 Xs :-
+   sort (list 1) is (cons X Xs).
+
+# Ensure there's always a count for items in the first list
+count X is? 0 :- fact 0 _ is X.
+
+# Weighted sum by count
+#lazy sumList
+sumList nil is 0.
+sumList (cons X Xs) is (plus (times X (count X)) (sumList Xs)).
+
+answer is (sumList (list 0)).

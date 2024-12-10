@@ -1,0 +1,138 @@
+# AOC 2024 Day 7, Part 2
+
+# npx dusa src/07b.dusa -f data/day07-test.json -n0 -qanswer
+
+# # SOME MATH # # 
+
+#builtin INT_PLUS plus
+#builtin INT_TIMES times
+#builtin NAT_SUCC s
+
+#lazy find_mag
+find_mag N Mag is Mag :- Mag > N, Mag <= times N 10.
+find_mag N Mag is Mag' :-
+   Mag <= N,
+   find_mag N (times Mag 10) is Mag'.
+
+#lazy magnitude
+magnitude N is (find_mag N 10).
+
+#lazy concat
+concat A B is (plus (times A Mag) B) :-
+   magnitude B is Mag.
+
+#lazy max
+max A B C is A :- A >= B, A >= C.
+max A B C is B :- B >= A, B >= C.
+max A B C is C :- C >= A, C >= B.
+
+#lazy min
+min A B C is A :- A <= B, A <= C.
+min A B C is B :- B <= A, B <= C.
+min A B C is C :- C <= A, C <= B.
+
+
+# # PARSING # #
+
+eqn_goal N is V :-
+  root 0 is Root,
+  field Root N is R,
+  field R "test" is V.
+eqn_item N I is V :-
+  root 0 is Root,
+  field Root N is R,
+  field R "eqn" is Eqn,
+  field Eqn I is V.  
+eqn_length N is Len :-
+  root 0 is Root,
+  field Root N is R,
+  field R "eqn" is Eqn,
+  length Eqn is Len.
+
+# # DECODING EQUATIONS # #
+
+# We'll proceed by coming up with partial possible 
+# accumulations. With 81, 40, and 27 the partial
+# possible accumulations are
+# Index 1: 81
+# Index 2: 81*40=3240, 81+40=121, 81||40=8140
+# Index 3: 3240*27=88209, 3240+27=3267, 3240||27=324027, ...and six more
+#
+# We'll try to stop searching for prefixes aggressively by always 
+# finding the MAXIMUM possible accumulation and the MINIMUM possible 
+# accumulation.
+#
+# At index 2 with a partial computation of...
+#  - ...121, the maximum value is 12127 and the minimum value is 148.
+#    The goal 3267 is between those two goalposts, so we should keep
+#    trying to extend this partial computation.
+#  - ...8140, the minimum value is 8167, which is greater than the
+#    goal 3267, so we should STOP trying to extend this partial computation.
+#  - ...3240, the minimum value is 3267... oh, that's the goal, we should
+#    stop searching till we're done.
+
+high_water Eqn I V I is V :- possible_accum Eqn I V.
+high_water Eqn I' V' (s I) is VNext :-
+   high_water Eqn I' V' I is V,
+   max 
+      (plus V (eqn_item Eqn I))
+      (times V (eqn_item Eqn I))
+      (concat V (eqn_item Eqn I))
+   is VNext.
+
+low_water Eqn I V I is V :- possible_accum Eqn I V.
+low_water Eqn I' V' (s I) is VNext :-
+   low_water Eqn I' V' I is V,
+   min
+      (plus V (eqn_item Eqn I))
+      (times V (eqn_item Eqn I))
+      (concat V (eqn_item Eqn I))
+   is VNext.
+
+# Accumulation always starts with the value in index 0
+possible_accum Eqn 1 V :- eqn_item Eqn 0 is V.
+
+# Finish immediately if low water or high water is finish
+possible_accum Eqn Len Goal :-
+   eqn_length Eqn is Len,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn I V,
+   low_water Eqn I V Len is Goal.
+possible_accum Eqn Len Goal :-
+   eqn_length Eqn is Len,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn I V,
+   high_water Eqn I V Len is Goal.
+
+# Continue with single steps if the target is between low water & high water
+possible_accum Eqn (plus I 1) (plus V (eqn_item Eqn I)) :-
+   eqn_length Eqn is Len,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn I V, 
+   low_water Eqn I V Len < Goal,
+   high_water Eqn I V Len > Goal.
+possible_accum Eqn (plus I 1) (times V (eqn_item Eqn I)) :-
+   eqn_length Eqn is Len,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn I V, 
+   low_water Eqn I V Len < Goal,
+   high_water Eqn I V Len > Goal.
+possible_accum Eqn (plus I 1) (concat V (eqn_item Eqn I)) :-
+   eqn_length Eqn is Len,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn I V,
+   low_water Eqn I V Len < Goal,
+   high_water Eqn I V Len > Goal.
+
+accum 0 is 0.
+accum (plus Eqn 1) is? Accum :- 
+   accum Eqn is Accum,
+   eqn_length Eqn is _.
+accum (plus Eqn 1) is (plus Accum (eqn_goal Eqn)) :-
+   accum Eqn is Accum,
+   eqn_goal Eqn is Goal,
+   possible_accum Eqn (eqn_length Eqn) Goal.
+answer is Accum :-
+   root 0 is Root,
+   length Root is Len,
+   accum Len is Accum.

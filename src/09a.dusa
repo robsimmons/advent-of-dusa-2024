@@ -1,0 +1,60 @@
+# AOC 2024 Day 9, Part 1
+
+# npx dusa src/09a.dusa -f data/day09-test.json -qanswer
+
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+#builtin INT_TIMES times
+#lazy s. s N is (plus N 1).
+#lazy p. p N is (minus N 1).
+
+input 0 1 N (just 0) :- field 0 0 is N.
+
+# How many files are there?
+totalAt 0 0 is N :- field 0 0 is N.
+totalAt (s (s K)) (s FileNum) is (plus N FileSize) :- 
+    totalAt K FileNum is N,
+    field 0 (s (s K)) is FileSize.
+total is N :- length 0 is K, totalAt (plus K -1) _ is N.
+
+# order Index N - where files go, in order
+order (minus Index FileSize) FileNum (minus FileSize 1) :-
+   totalAt K FileNum is Index,
+   field 0 K is FileSize.
+order (plus Index 1) FileNum (minus Size 1) :-
+   order Index FileNum Size, Size > 0.
+
+fill -1 -1 backward 0 0 0 (p total).
+
+fill (s Slot) Value forward (p Size) (s K) (s Front) Back :-
+   fill Slot _ backward 0 K Front Back, Slot < total,
+   field 0 K is Size, Size > 0,
+   order Front Value _.
+
+fill (s Slot) Value forward (p Size) K (s Front) Back :- 
+   fill Slot _ forward Size K Front Back, Slot < total,
+   Size > 0, 
+   order Front Value _.
+
+fill (s Slot) Value backward (p Size) (s K) Front (p Back) :-
+   fill Slot _ forward 0 K Front Back, Slot < total,
+   field 0 K is Size, Size > 0,
+   order Back Value _.
+
+fill (s Slot) Value forward (p Size) (s (s K)) (s Front) Back :-
+   fill Slot _ forward 0 K Front Back, Slot < total,
+   field 0 K is 0, field 0 (s K) is Size, Size > 0,
+   order Front Value _.
+
+fill (s Slot) Value backward (p Size) K Front (p Back) :-
+   fill Slot _ backward Size K Front Back, Slot < total,
+   Size > 0, 
+   order Back Value _.
+
+accum 0 is 0.
+accum (s N) is (plus Accum (times N Value)) :-
+   accum N is Accum,
+   fill N Value _ _ _ _ _,
+   N < total.
+
+answer is (accum total).
