@@ -1,0 +1,24 @@
+# AOC 2024, Day 10, Part 2
+
+# npx dusa src/Ab.dusa -f data/dayA-test.json -canswer
+
+#builtin NAT_SUCC s
+#builtin INT_PLUS plus
+
+at X Y is N :-
+    root 0 is Root,
+    field Root Y is Line,
+    field Line X is N.
+dir 0 1.
+dir 0 -1.
+dir 1 0.
+dir -1 0.
+
+trail 0 (cons X Y nil) :-
+    at X Y is 0.
+trail (s N) (cons X' Y' Trail) :-
+    trail N Trail, Trail == cons X Y _,
+    dir DX DY, X' == plus X DX, Y' == plus Y DY,
+    at X' Y' is (s N).
+
+answer Trail :- trail 9 Trail.

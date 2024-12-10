@@ -1,0 +1,26 @@
+# AOC 2024, Day 10, Part 1
+
+# npx dusa src/Aa.dusa -f data/dayA-test.json -canswer
+
+#builtin NAT_SUCC s
+#builtin INT_PLUS plus
+
+at X Y is N :-
+    root 0 is Root,
+    field Root Y is Line,
+    field Line X is N.
+dir 0 1.
+dir 0 -1.
+dir 1 0.
+dir -1 0.
+
+
+reachable X Y X Y 0 :- 
+    at X Y is 0.
+reachable X0 Y0 X' Y' (s N) :-
+    reachable X0 Y0 X Y N,
+    dir DX DY, X' == plus X DX, Y' == plus Y DY,
+    at X' Y' is (s N).
+
+# Switch coordnates to use "reading order" for debugging
+answer Y X X' Y' :- reachable X Y X' Y' 9.
