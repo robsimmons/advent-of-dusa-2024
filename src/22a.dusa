@@ -1,0 +1,3 @@
+AOC 2024, Day 22, Part 1
+
+# npx dusa src/22a.dusa -f data/day22-test.json -qanswer
