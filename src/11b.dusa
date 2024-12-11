@@ -1,3 +1,70 @@
-AOC 2024, Day 11, Part 2
+# AOC 2024 Day 11, Part 2
 
-# npx dusa src/11b.dusa -f data/day11-test.json -qanswer
+# Test input:
+# npx dusa src/11b.dusa -a '{"name":"goal", "value":6}'  -f data/day11-test.json -qanswer
+
+# Part 1:
+# npx dusa src/11b.dusa -a '{"name":"goal", "value":25}'  -f data/day11-test.json -qanswer
+
+# Part 2:
+# npx dusa src/11b.dusa -a '{"name":"goal", "value":75}'  -f data/day11-test.json -qanswer
+
+# # SOME MATH # # 
+
+#builtin INT_PLUS plus
+#builtin INT_TIMES times
+#builtin INT_MINUS minus
+#builtin NAT_SUCC s
+#lazy p. p N is (minus N 1) :- N > 0.
+
+# # Splitting numbers is unnecessarily hard without division # #
+
+# Magnitude calculation
+#lazy find_mag
+find_mag 0 _ is 1.
+find_mag N Mag is Mag :- N > 0, Mag > N, Mag <= times N 10.
+find_mag N Mag is Mag' :- N > 0, Mag <= N, find_mag N (times Mag 10) is Mag'.
+
+#lazy magnitude
+magnitude N is (find_mag N 10).
+
+prev_mag 10 is 1.
+prev_mag (times 10 M) is M :- prev_mag M is _, M < 10000000000000000000000.
+#lazy next_mag
+next_mag N is (times 10 N).
+
+# Splitting numbers
+digit 9. digit (minus N 1) :- digit N, N > 0.
+#lazy find_split
+find_split MagN N MagM M is (tuple N M) :- MagN == next_mag MagM.
+find_split MagN N MagM M is nothing :- MagN > next_mag MagM.
+find_split MagN N MagM M is Ans :-
+    digit D, MagN < next_mag MagM,
+    M' == minus M (times MagM D), M' >= 0, minus M' MagM < 0,
+    N' == plus (times N 10) D,
+    find_split (next_mag MagN) N' (prev_mag MagM) M' is Ans.
+
+#lazy split
+split N is nothing :- N <= 9.
+split N is (find_split 1 0 (prev_mag (magnitude N)) N) :- N > 9.
+
+#lazy descendents
+descendents V 0 is 1.
+descendents 0 N 
+    is descendents 1 (p N).
+descendents V N 
+    is (descendents (times 2024 V) (p N)) :-
+    V > 0, split V is nothing.
+descendents V N
+    is (plus
+         (descendents Left (p N))
+         (descendents Right (p N))) :- 
+    V > 0, split V is (tuple Left Right).
+
+accum 0 is 0.
+accum (s N) is (plus Accum (descendents V Goal)) :-
+    accum N is Accum,
+    field _ N is V,
+    goal is Goal.
+answer is Accum :- length _ is N, accum N is Accum.
+

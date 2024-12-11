@@ -1,3 +1,63 @@
-AOC 2024, Day 11, Part 1
+# AOC 2024, Day 11, Part 1
 
-# npx dusa src/11a.dusa -f data/day11-test.json -qanswer
+# npx dusa src/11a.dusa -a '{"name":"goal", "value":6}' -f data/day11-test.json -canswer
+
+# AOC 2024 Day 11, Part 1
+
+# # SOME MATH # # 
+
+#builtin INT_PLUS plus
+#builtin INT_TIMES times
+#builtin INT_MINUS minus
+#builtin NAT_SUCC s
+
+# # Splitting numbers is unnecessarily hard without division # #
+
+# Magnitude calculation
+#lazy find_mag
+find_mag 0 _ is 1.
+find_mag N Mag is Mag :- N > 0, Mag > N, Mag <= times N 10.
+find_mag N Mag is Mag' :- N > 0, Mag <= N, find_mag N (times Mag 10) is Mag'.
+
+#lazy magnitude
+magnitude N is (find_mag N 10).
+
+prev_mag 10 is 1.
+prev_mag (times 10 M) is M :- prev_mag M is _, M < 10000000000000000000000.
+#lazy next_mag
+next_mag N is (times 10 N).
+
+# Splitting numbers
+digit 9. digit (minus N 1) :- digit N, N > 0.
+#lazy find_split
+find_split MagN N MagM M is (tuple N M) :- MagN == next_mag MagM.
+find_split MagN N MagM M is nothing :- MagN > next_mag MagM.
+find_split MagN N MagM M is Ans :-
+    digit D, MagN < next_mag MagM,
+    M' == minus M (times MagM D), M' >= 0, minus M' MagM < 0,
+    N' == plus (times N 10) D,
+    find_split (next_mag MagN) N' (prev_mag MagM) M' is Ans.
+
+#lazy split
+split N is nothing :- N <= 9.
+split N is (find_split 1 0 (prev_mag (magnitude N)) N) :- N > 9.
+
+p X Y :- X == 1, split X is Y.
+
+# # Actually doing the problem # #
+blink 0 I is V :- field _ I is V.
+blink (s B) I is 1 :- 
+    do B, blink B I is 0.
+blink (s B) (l I) is LV :-
+    do B, blink B I is V, 
+    V > 0, split V is (tuple LV RV).
+blink (s B) (r I) is RV :- 
+    do B, blink B I is V, 
+    V > 0, split V is (tuple LV RV).
+blink (s B) I is (times 2024 V) :- 
+    do B, blink B I is V, 
+    V > 0, split V is nothing.
+
+do (minus Goal 1) :- goal is Goal.
+do (minus N 1) :- do N, N > 0.
+answer N :- blink goal N is _.
