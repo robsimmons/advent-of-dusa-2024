@@ -42,8 +42,6 @@ find_split MagN N MagM M is Ans :-
 split N is nothing :- N <= 9.
 split N is (find_split 1 0 (prev_mag (magnitude N)) N) :- N > 9.
 
-p X Y :- X == 1, split X is Y.
-
 # # Actually doing the problem # #
 blink 0 I is V :- field _ I is V.
 blink (s B) I is 1 :- 
