@@ -1,4 +1,4 @@
-// node src/12a.js < data/day12-test.txt
+// node src/12.js < data/day12-test.txt
 
 import { readFileSync } from "fs";
 import { jsonToFacts } from "./util.js";
