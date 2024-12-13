@@ -4,10 +4,17 @@
 import { readFileSync } from "fs";
 import { factToString, jsonToFacts } from "./util.js";
 
+function lineToFact(line) {
+  const [_, label, x, y] = line.match(
+    /^([A-Za-z ]*): X[+=]([0-9]*), Y[+=]([0-9]*)$/
+  );
+  return [label, { x: parseInt(x), y: parseInt(y) }];
+}
+
 const json = readFileSync(0, "utf-8")
   .trim()
-  .split("\n")
-  .map((line) => line.trim().split(""));
+  .split("\n\n")
+  .map((group) => Object.fromEntries(group.split("\n").map(lineToFact)));
 const facts = jsonToFacts(json);
 
 console.log(JSON.stringify(facts));
