@@ -1,1 +1,20 @@
-[{"name":"root","args":[0],"value":0},{"name":"length","args":[0],"value":4},{"name":"field","args":[0,0],"value":1},{"name":"field","args":[1,"Button A"],"value":94},{"name":"field","args":[1,"Button B"],"value":22},{"name":"field","args":[1,"Prize"],"value":8400},{"name":"field","args":[0,1],"value":2},{"name":"field","args":[2,"Button A"],"value":26},{"name":"field","args":[2,"Button B"],"value":67},{"name":"field","args":[2,"Prize"],"value":12748},{"name":"field","args":[0,2],"value":3},{"name":"field","args":[3,"Button A"],"value":17},{"name":"field","args":[3,"Button B"],"value":84},{"name":"field","args":[3,"Prize"],"value":7870},{"name":"field","args":[0,3],"value":4},{"name":"field","args":[4,"Button A"],"value":69},{"name":"field","args":[4,"Button B"],"value":27},{"name":"field","args":[4,"Prize"],"value":18641}]
+[
+  { "name": "root", "args": [0], "value": 0 },
+  { "name": "length", "args": [0], "value": 4 },
+  { "name": "field", "args": [0, 0], "value": 1 },
+  { "name": "field", "args": [1, "Button A"], "value": 94 },
+  { "name": "field", "args": [1, "Button B"], "value": 22 },
+  { "name": "field", "args": [1, "Prize"], "value": 8400 },
+  { "name": "field", "args": [0, 1], "value": 2 },
+  { "name": "field", "args": [2, "Button A"], "value": 26 },
+  { "name": "field", "args": [2, "Button B"], "value": 67 },
+  { "name": "field", "args": [2, "Prize"], "value": 12748 },
+  { "name": "field", "args": [0, 2], "value": 3 },
+  { "name": "field", "args": [3, "Button A"], "value": 17 },
+  { "name": "field", "args": [3, "Button B"], "value": 84 },
+  { "name": "field", "args": [3, "Prize"], "value": 7870 },
+  { "name": "field", "args": [0, 3], "value": 4 },
+  { "name": "field", "args": [4, "Button A"], "value": 69 },
+  { "name": "field", "args": [4, "Button B"], "value": 27 },
+  { "name": "field", "args": [4, "Prize"], "value": 18641 }
+]

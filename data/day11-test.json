@@ -1,1 +1,6 @@
-[{"name":"root","args":[0],"value":0},{"name":"length","args":[0],"value":2},{"name":"field","args":[0,0],"value":125},{"name":"field","args":[0,1],"value":17}]
+[
+  { "name": "root", "args": [0], "value": 0 },
+  { "name": "length", "args": [0], "value": 2 },
+  { "name": "field", "args": [0, 0], "value": 125 },
+  { "name": "field", "args": [0, 1], "value": 17 }
+]
