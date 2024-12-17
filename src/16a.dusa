@@ -1,3 +1,44 @@
 # AOC 2024, Day 16, Part 1
 
-# npx dusa src/16a.dusa -f data/day16-test.json -qanswer
+# npx dusa src/16a.dusa -f data/day16-test.json -qanswer -a '{"name": "max_cost", "value":12000 }' -n0
+
+#builtin INT_PLUS plus
+#builtin NAT_SUCC s
+
+dir 0 -1. dir 0 1. dir -1 0. dir 1 0.
+
+turn (tuple 0 -1) (tuple 1 0). turn (tuple 0 -1) (tuple 1 0).
+turn (tuple 0 1) (tuple 1 0). turn (tuple 0 1) (tuple 1 0).
+turn (tuple -1 0) (tuple 0 1). turn (tuple -1 0) (tuple 0 -1).
+turn (tuple 1 0) (tuple 0 1). turn (tuple 1 0) (tuple 0 -1).
+
+pos X Y is Ch :-
+    field Root Y is Line,
+    field Line X is Ch, Ch != "#".   
+
+reachable 0 is (node X Y 1 0 0) :-
+    field Root Y is Line,
+    field Line X is "S".
+
+reachable (s Steps) is? 
+  (node (plus X DX) (plus Y DY) DX DY (plus Cost 1)) :-
+    reachable Steps is (node X Y DX DY Cost), 
+    pos X Y is Ch, Ch != "E",
+    pos (plus X DX) (plus Y DY) is _.
+
+reachable (s Steps) is?
+  (node X Y DX' DY' (plus Cost 1000)) :-
+    pos X Y is Ch, Ch != "E", 
+    reachable Steps is (node X Y DX DY Cost),
+    turn (tuple DX DY) (tuple DX' DY').
+
+answer is Cost :-     
+    pos X Y is "E",
+    reachable _ is (node X Y _ _ Cost).
+
+#forbid 
+    reachable Steps is (node X Y DX DY _),
+    reachable Steps' is (node X Y DX DY _),
+    Steps != Steps'.
+
+#forbid reachable _ is (node _ _ _ _ Cost), max_cost is Max, Cost > Max.
