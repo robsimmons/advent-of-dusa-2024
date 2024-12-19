@@ -4,10 +4,10 @@
 import { readFileSync } from "fs";
 import { factToString, jsonToFacts } from "./util.js";
 
-const json = readFileSync(0, "utf-8")
-  .trim()
-  .split("\n")
-  .map((line) => line.trim().split(""));
+const json = (([towels, designs]) => ({
+  towels: towels.split(", "),
+  designs: designs.split("\n"),
+}))(readFileSync(0, "utf-8").trim().split("\n\n"));
 const facts = jsonToFacts(json);
 
 console.log(JSON.stringify(facts));

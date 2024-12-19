@@ -1,3 +1,21 @@
 # AOC 2024, Day 19, Part 1
 
-# npx dusa src/19a.dusa -f data/day19-test.json -qanswer
+# npx dusa src/19a.dusa -f data/day19-test.json -canswer
+
+#builtin STRING_CONCAT concat
+
+towel N is Towel :-
+    field _ "towels" is Towels,
+    field Towels N is Towel.
+design N is Design :-
+    field _ "designs" is Designs,
+    field Designs N is Design.
+
+#lazy match
+match "".
+match Design :-
+    towel _ is Towel,
+    concat Towel Rest is Design,
+    match Rest.
+
+answer N :- design N is Design, match Design.
