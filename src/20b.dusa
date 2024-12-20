@@ -1,3 +1,48 @@
 # AOC 2024, Day 20, Part 2
 
-# npx dusa src/20b.dusa -f data/day20-test.json -qanswer
+# npx dusa src/20b.dusa -f data/day20-test.json -a '{"name":"min_saved", "value": 50}' -canswer
+# npx dusa src/20b.dusa -f data/day20-rob.json -a '{"name":"min_saved", "value": 100}' -canswer
+
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+#builtin NAT_SUCC s
+
+d -1 0. d 1 0. d 0 -1. d 0 1.
+at X Y is Ch :- 
+   root 0 is Rows,
+   field Rows Y is Row,
+   field Row X is Ch.
+
+step 0 is (tuple X Y) :- 
+   at X Y is "S".
+
+step (s N) is? (tuple X' Y') :-
+   step N is (tuple X Y), 
+   at X Y != "E",
+   d DX DY,
+   X' == plus X DX,
+   Y' == plus Y DY,
+   at X' Y' is Ch, Ch != "#".
+
+#forbid step N is Pos, step N' is Pos, N != N'.
+
+#lazy abs
+abs N is N :- N >= 0.
+abs N is (minus 0 N) :- N <= 0.
+
+delta 20.
+delta (minus N 1) :- delta N, N > -20.
+cheatd DX DY :-
+   delta DX, delta DY, 
+   plus (abs DX) (abs DY) > 1,
+   plus (abs DX) (abs DY) <= 20.
+
+min_saved is? 50.
+answer Saved (tuple X Y) (tuple X' Y') :-
+   step N is (tuple X Y),
+   cheatd DX DY,
+   X' == plus X DX,
+   Y' == plus Y DY,
+   step N' is (tuple X' Y'), N' > N,
+   Saved == minus (minus N' N) (plus (abs DX) (abs DY)),
+   Saved >= min_saved.

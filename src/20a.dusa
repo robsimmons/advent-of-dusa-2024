@@ -1,3 +1,39 @@
 # AOC 2024, Day 20, Part 1
 
-# npx dusa src/20a.dusa -f data/day20-test.json -qanswer
+# npx dusa src/20a.dusa -f data/day20-test.json -a '{"name":"min_saved", "value": 0}' -canswer
+# npx dusa src/20a.dusa -f data/day20-rob.json -a '{"name":"min_saved", "value": 100}' -canswer
+
+# AOC 2024, Day 20, Part 1
+
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+#builtin NAT_SUCC s
+
+d -1 0. d 1 0. d 0 -1. d 0 1.
+at X Y is Ch :- 
+   root 0 is Rows,
+   field Rows Y is Row,
+   field Row X is Ch.
+
+step 0 is (tuple X Y) :- 
+   at X Y is "S".
+
+step (s N) is? (tuple X' Y') :-
+   step N is (tuple X Y), 
+   at X Y != "E",
+   d DX DY,
+   X' == plus X DX,
+   Y' == plus Y DY,
+   at X' Y' is Ch, Ch != "#".
+
+#forbid step N is Pos, step N' is Pos, N != N'.
+
+min_saved is? 5.
+answer Saved (tuple X Y) (tuple X' Y') :-
+   step N is (tuple X Y),
+   d DX DY, d DX' DY',
+   X' == plus X DX DX',
+   Y' == plus Y DY DY',
+   step N' is (tuple X' Y'), N' > N,
+   Saved == minus (minus N' N) 2,
+   Saved >= min_saved.
