@@ -1,3 +1,72 @@
 # AOC 2024, Day 21, Part 1
 
-# npx dusa src/21a.dusa -f data/day21-test.json -qanswer
+# npx dusa src/21a.dusa -f data/day21-test.json -qaa_answer
+
+#builtin NAT_SUCC s
+#builtin INT_PLUS plus
+#builtin INT_TIMES times
+
+# Robot-ception on the cell phone
+phone 0 0 is "7". phone 1 0 is "8". phone 2 0 is "9".
+phone 0 1 is "4". phone 1 1 is "5". phone 2 1 is "6".
+phone 0 2 is "1". phone 1 2 is "2". phone 2 2 is "3".
+                  phone 1 3 is "0". phone 2 3 is "A".
+
+               pad 1 0 is uu. pad 2 0 is aa.
+pad 0 1 is ll. pad 1 1 is dd. pad 2 1 is rr.
+
+d uu is (tuple 0 -1).
+d ll is (tuple -1 0).
+d dd is (tuple 0 1).
+d rr is (tuple 1 0).
+
+#lazy advance
+advance (end N) aa is (output N).
+advance (end N) DD is (end M) :-
+    d DD is (tuple DX DY),
+    phone X Y is N,
+    phone (plus X DX) (plus Y DY) is M.    
+advance (chain C P) aa is (output N) :-
+    advance C P is output N.
+advance (chain C P) aa is (chain C' P) :-
+    advance C P is C', C' != output _.
+advance (chain C P) DD is (chain C P') :-
+    d DD is (tuple DX DY),
+    pad X Y is P,
+    pad (plus X DX) (plus Y DY) is P'.
+
+reachable N (chain (chain (end N) aa) aa) 0 :- phone _ _ is N.
+reachable N Ch' (s Steps) :-
+    pad _ _ is DD,
+    reachable N Ch Steps, Steps < 30,
+    advance Ch DD is Ch'.
+
+best N M is? Count :- reachable N (output M) Count.
+#forbid best N M is Count, reachable N (output M) Count', Count > Count'.
+
+# Overall calculation
+seq_calc Seq "A" 0 is 0 :-
+   field _ "asSeq" is Seq.
+seq_calc Seq Ch' (s N) is (plus Accum Cost) :-
+   seq_calc Seq Ch N is Accum,
+   field Seq N is Ch',
+   best Ch Ch' is Cost.
+
+seq_complexity Seq is (tuple Cost AsNum) :-
+   length Seq is Len,
+   seq_calc Seq _ Len is Cost,
+   field R "asSeq" is Seq,
+   field R "asNum" is AsNum.
+
+# Accumulation
+accum 0 is 0.
+accum (s N) is (plus Accum (times Cost AsNum)) :-
+   accum N is Accum,
+   root 0 is Root,
+   field Root N is R,
+   field R "asSeq" is Seq,
+   seq_complexity Seq is (tuple Cost AsNum).
+aa_answer is Answer :-
+   root 0 is Root,
+   length Root is N,
+   accum N is Answer.

@@ -1,0 +1,42 @@
+root 0 is 0.
+length 0 is 5.
+field 0 0 is 1.
+field 1 "asNum" is 29.
+field 1 "asSeq" is 2.
+length 2 is 4.
+field 2 0 is "0".
+field 2 1 is "2".
+field 2 2 is "9".
+field 2 3 is "A".
+field 0 1 is 3.
+field 3 "asNum" is 980.
+field 3 "asSeq" is 4.
+length 4 is 4.
+field 4 0 is "9".
+field 4 1 is "8".
+field 4 2 is "0".
+field 4 3 is "A".
+field 0 2 is 5.
+field 5 "asNum" is 179.
+field 5 "asSeq" is 6.
+length 6 is 4.
+field 6 0 is "1".
+field 6 1 is "7".
+field 6 2 is "9".
+field 6 3 is "A".
+field 0 3 is 7.
+field 7 "asNum" is 456.
+field 7 "asSeq" is 8.
+length 8 is 4.
+field 8 0 is "4".
+field 8 1 is "5".
+field 8 2 is "6".
+field 8 3 is "A".
+field 0 4 is 9.
+field 9 "asNum" is 379.
+field 9 "asSeq" is 10.
+length 10 is 4.
+field 10 0 is "3".
+field 10 1 is "7".
+field 10 2 is "9".
+field 10 3 is "A".
