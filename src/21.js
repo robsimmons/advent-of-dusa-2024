@@ -6,6 +6,7 @@
 
 import { Dusa } from "dusa";
 import { readFileSync } from "fs";
+import { argv } from "process";
 
 const json = readFileSync(0, "utf-8")
   .trim()
@@ -90,25 +91,42 @@ for (const start of dirs) {
   }
 }
 
-const memo = new Map();
+const memoTable = new Map();
+/** 
+ * Find the lowest cost way to get from the robot pointing
+ * at d1 to the robot pointing at d2, on top of `numAs`
+ * roboceptions.
+ *
+ * Precondition: numAs >= 1
+ */
 function minimizeDist(d1, d2, numAs) {
-  // Base case: just the shortest path
-  if (numAs === 0)
-    return dirPoss[d1][d2].reduce(
-      (min, arr) => Math.min(min, arr.length),
-      Infinity
-    );
-
   const key = `${d1}-${d2}-${numAs}`;
-  if (memo.has(key)) return memo.get(key);
+  if (memoTable.has(key)) return memoTable.get(key);
 
   let { bestCost, bestRoute } = getMinRouteCost(dirPoss[d1][d2], numAs - 1);
-  memo.set(key, bestCost);
+  memoTable.set(key, bestCost);
   console.log({ key, bestCost, bestRoute });
   return bestCost;
 }
 
+/**
+ * Find the lowest cost route among the alternatives,
+ * on top of `numAs` robotceptions
+ * 
+ * Precondition: numAs >= 0
+ */
 function getMinRouteCost(routes, numAs) {
+  // Base case: just the shortest path
+  if (numAs === 0) {
+    return routes.reduce(
+      ({ bestCost, bestRoute }, route) =>
+        bestCost > route.length
+          ? { bestCost: route.length, bestRoute: route }
+          : { bestCost, bestRoute },
+      { bestCost: Infinity }
+    );
+  }
+
   let bestCost = Infinity;
   let bestRoute = null;
   for (const route of routes) {
@@ -126,16 +144,21 @@ function getMinRouteCost(routes, numAs) {
   return { bestCost, bestRoute };
 }
 
+let total = 0;
 for (const { asNum, asSeq } of json) {
   let last = "A";
   let cost = 0;
   let route = [];
   for (const next of asSeq) {
-    const { bestCost, bestRoute } = getMinRouteCost(digitPoss[last][next], 0);
+    const { bestCost, bestRoute } = getMinRouteCost(
+      digitPoss[last][next],
+      parseInt(argv[2])
+    );
     cost += bestCost;
     route = [...route, ...bestRoute];
     last = next;
-    console.log({ cost, route, last, next });
   }
-  console.log({ asNum, asSeq, cost, route });
+  console.log({ asNum, asSeq, cost });
+  total = total + asNum * cost;
 }
+console.log({ total });
