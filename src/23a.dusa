@@ -1,3 +1,27 @@
 # AOC 2024, Day 23, Part 1
 
-# npx dusa src/23a.dusa -f data/day23-test.json -qanswer
+# npx dusa src/23a.dusa -f data/day23-test.json -ctclique
+
+# AOC 2024, Day 23, Part 1
+
+#builtin NAT_SUCC s
+#builtin INT_PLUS plus
+#builtin INT_TIMES times
+#builtin STRING_CONCAT concat
+
+uedge X Y :-
+   root 0 is Root,
+   field Root N is Link,
+   field Link 0 is X,
+   field Link 1 is Y.
+uedge Y X :- uedge X Y.
+edge X Y :- uedge X Y, X < Y.
+
+clique X Y Z :-
+   edge X Y,
+   edge X Z,
+   edge Y Z.
+
+tclique X Y Z :- clique X Y Z, concat "t" _ is X. 
+tclique X Y Z :- clique X Y Z, concat "t" _ is Y. 
+tclique X Y Z :- clique X Y Z, concat "t" _ is Z. 

@@ -1,3 +1,38 @@
 # AOC 2024, Day 23, Part 2
 
 # npx dusa src/23b.dusa -f data/day23-test.json -qanswer
+
+#builtin NAT_SUCC s
+#builtin INT_PLUS plus
+#builtin INT_TIMES times
+#builtin STRING_CONCAT concat
+
+uedge X Y :-
+   root 0 is Root,
+   field Root N is Link,
+   field Link 0 is X,
+   field Link 1 is Y.
+uedge Y X :- uedge X Y.
+edge X Y :- uedge X Y, X < Y.
+
+clique 3 (cons X (cons Y (cons Z nil))) :-
+   edge X Y,
+   edge X Z,
+   edge Y Z.
+
+#lazy eclique
+eclique X nil .
+eclique X (cons Y Cl) :-
+   edge X Y, eclique X Cl.
+
+clique (s N) (cons X (cons Y Cl)) :-
+   clique N (cons Y Cl),
+   edge X Y, eclique X Cl.
+
+maxclique is? (tuple N Cl) :- clique N Cl.
+#forbid maxclique is (tuple N _), clique N' _, N < N'.
+
+#lazy password
+password (cons X nil) is X.
+password (cons X Cl) is (concat X "," (password Cl)) :- Cl != nil.
+answer is (password Cl) :- maxclique is (tuple _ Cl).
