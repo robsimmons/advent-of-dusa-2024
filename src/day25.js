@@ -6,8 +6,8 @@ import { factToString, jsonToFacts } from "./util.js";
 
 const json = readFileSync(0, "utf-8")
   .trim()
-  .split("\n")
-  .map((line) => line.trim().split(""));
+  .split("\n\n")
+  .map((schema) => schema.split("\n").map((line) => line.split("")));
 const facts = jsonToFacts(json);
 
 console.log(JSON.stringify(facts));

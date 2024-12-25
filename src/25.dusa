@@ -1,0 +1,40 @@
+# AOC 2024, Day 25, Part 1
+
+# npx dusa src/25a.dusa -f data/day25-test.json -canswer
+
+#builtin NAT_SUCC s
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+
+schema_length is Len :- root 0 is Root, length Root is Len.
+schema_json N is R :- root 0 is Root, field Root N is R.
+schema_type N is lock :- 
+    schema_json N is R, 
+    field R 0 is First, 
+    field First _ is ".".
+schema_type N is key :-
+    schema_json N is R,
+    field R 0 is First,
+    field First _ is "#".
+    
+height N I is K :-
+    schema_json N is R,
+    field R K is Line,
+    field Line I is Ch,
+    field R (s K) is Line',
+    field Line' I is Ch',
+    Ch != Ch'.
+
+overlap K L I :-
+    schema_type K is key,
+    schema_type L is lock,
+    height K I is N,
+    height L I is M,
+    (plus N (minus 5 M)) > 5.
+
+has_overlap K L is? ff :-
+    schema_type K is key,
+    schema_type L is lock.
+has_overlap K L is tt :- overlap K L _.
+
+answer K L :- has_overlap K L is ff.

@@ -1,0 +1,257 @@
+root 0 is 0.
+length 0 is 5.
+field 0 0 is 1.
+length 1 is 7.
+field 1 0 is 2.
+length 2 is 5.
+field 2 0 is "#".
+field 2 1 is "#".
+field 2 2 is "#".
+field 2 3 is "#".
+field 2 4 is "#".
+field 1 1 is 3.
+length 3 is 5.
+field 3 0 is ".".
+field 3 1 is "#".
+field 3 2 is "#".
+field 3 3 is "#".
+field 3 4 is "#".
+field 1 2 is 4.
+length 4 is 5.
+field 4 0 is ".".
+field 4 1 is "#".
+field 4 2 is "#".
+field 4 3 is "#".
+field 4 4 is "#".
+field 1 3 is 5.
+length 5 is 5.
+field 5 0 is ".".
+field 5 1 is "#".
+field 5 2 is "#".
+field 5 3 is "#".
+field 5 4 is "#".
+field 1 4 is 6.
+length 6 is 5.
+field 6 0 is ".".
+field 6 1 is "#".
+field 6 2 is ".".
+field 6 3 is "#".
+field 6 4 is ".".
+field 1 5 is 7.
+length 7 is 5.
+field 7 0 is ".".
+field 7 1 is "#".
+field 7 2 is ".".
+field 7 3 is ".".
+field 7 4 is ".".
+field 1 6 is 8.
+length 8 is 5.
+field 8 0 is ".".
+field 8 1 is ".".
+field 8 2 is ".".
+field 8 3 is ".".
+field 8 4 is ".".
+field 0 1 is 9.
+length 9 is 7.
+field 9 0 is 10.
+length 10 is 5.
+field 10 0 is "#".
+field 10 1 is "#".
+field 10 2 is "#".
+field 10 3 is "#".
+field 10 4 is "#".
+field 9 1 is 11.
+length 11 is 5.
+field 11 0 is "#".
+field 11 1 is "#".
+field 11 2 is ".".
+field 11 3 is "#".
+field 11 4 is "#".
+field 9 2 is 12.
+length 12 is 5.
+field 12 0 is ".".
+field 12 1 is "#".
+field 12 2 is ".".
+field 12 3 is "#".
+field 12 4 is "#".
+field 9 3 is 13.
+length 13 is 5.
+field 13 0 is ".".
+field 13 1 is ".".
+field 13 2 is ".".
+field 13 3 is "#".
+field 13 4 is "#".
+field 9 4 is 14.
+length 14 is 5.
+field 14 0 is ".".
+field 14 1 is ".".
+field 14 2 is ".".
+field 14 3 is "#".
+field 14 4 is ".".
+field 9 5 is 15.
+length 15 is 5.
+field 15 0 is ".".
+field 15 1 is ".".
+field 15 2 is ".".
+field 15 3 is "#".
+field 15 4 is ".".
+field 9 6 is 16.
+length 16 is 5.
+field 16 0 is ".".
+field 16 1 is ".".
+field 16 2 is ".".
+field 16 3 is ".".
+field 16 4 is ".".
+field 0 2 is 17.
+length 17 is 7.
+field 17 0 is 18.
+length 18 is 5.
+field 18 0 is ".".
+field 18 1 is ".".
+field 18 2 is ".".
+field 18 3 is ".".
+field 18 4 is ".".
+field 17 1 is 19.
+length 19 is 5.
+field 19 0 is "#".
+field 19 1 is ".".
+field 19 2 is ".".
+field 19 3 is ".".
+field 19 4 is ".".
+field 17 2 is 20.
+length 20 is 5.
+field 20 0 is "#".
+field 20 1 is ".".
+field 20 2 is ".".
+field 20 3 is ".".
+field 20 4 is ".".
+field 17 3 is 21.
+length 21 is 5.
+field 21 0 is "#".
+field 21 1 is ".".
+field 21 2 is ".".
+field 21 3 is ".".
+field 21 4 is "#".
+field 17 4 is 22.
+length 22 is 5.
+field 22 0 is "#".
+field 22 1 is ".".
+field 22 2 is "#".
+field 22 3 is ".".
+field 22 4 is "#".
+field 17 5 is 23.
+length 23 is 5.
+field 23 0 is "#".
+field 23 1 is ".".
+field 23 2 is "#".
+field 23 3 is "#".
+field 23 4 is "#".
+field 17 6 is 24.
+length 24 is 5.
+field 24 0 is "#".
+field 24 1 is "#".
+field 24 2 is "#".
+field 24 3 is "#".
+field 24 4 is "#".
+field 0 3 is 25.
+length 25 is 7.
+field 25 0 is 26.
+length 26 is 5.
+field 26 0 is ".".
+field 26 1 is ".".
+field 26 2 is ".".
+field 26 3 is ".".
+field 26 4 is ".".
+field 25 1 is 27.
+length 27 is 5.
+field 27 0 is ".".
+field 27 1 is ".".
+field 27 2 is ".".
+field 27 3 is ".".
+field 27 4 is ".".
+field 25 2 is 28.
+length 28 is 5.
+field 28 0 is "#".
+field 28 1 is ".".
+field 28 2 is "#".
+field 28 3 is ".".
+field 28 4 is ".".
+field 25 3 is 29.
+length 29 is 5.
+field 29 0 is "#".
+field 29 1 is "#".
+field 29 2 is "#".
+field 29 3 is ".".
+field 29 4 is ".".
+field 25 4 is 30.
+length 30 is 5.
+field 30 0 is "#".
+field 30 1 is "#".
+field 30 2 is "#".
+field 30 3 is ".".
+field 30 4 is "#".
+field 25 5 is 31.
+length 31 is 5.
+field 31 0 is "#".
+field 31 1 is "#".
+field 31 2 is "#".
+field 31 3 is ".".
+field 31 4 is "#".
+field 25 6 is 32.
+length 32 is 5.
+field 32 0 is "#".
+field 32 1 is "#".
+field 32 2 is "#".
+field 32 3 is "#".
+field 32 4 is "#".
+field 0 4 is 33.
+length 33 is 7.
+field 33 0 is 34.
+length 34 is 5.
+field 34 0 is ".".
+field 34 1 is ".".
+field 34 2 is ".".
+field 34 3 is ".".
+field 34 4 is ".".
+field 33 1 is 35.
+length 35 is 5.
+field 35 0 is ".".
+field 35 1 is ".".
+field 35 2 is ".".
+field 35 3 is ".".
+field 35 4 is ".".
+field 33 2 is 36.
+length 36 is 5.
+field 36 0 is ".".
+field 36 1 is ".".
+field 36 2 is ".".
+field 36 3 is ".".
+field 36 4 is ".".
+field 33 3 is 37.
+length 37 is 5.
+field 37 0 is "#".
+field 37 1 is ".".
+field 37 2 is ".".
+field 37 3 is ".".
+field 37 4 is ".".
+field 33 4 is 38.
+length 38 is 5.
+field 38 0 is "#".
+field 38 1 is ".".
+field 38 2 is "#".
+field 38 3 is ".".
+field 38 4 is ".".
+field 33 5 is 39.
+length 39 is 5.
+field 39 0 is "#".
+field 39 1 is ".".
+field 39 2 is "#".
+field 39 3 is ".".
+field 39 4 is "#".
+field 33 6 is 40.
+length 40 is 5.
+field 40 0 is "#".
+field 40 1 is "#".
+field 40 2 is "#".
+field 40 3 is "#".
+field 40 4 is "#".

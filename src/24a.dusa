@@ -1,3 +1,43 @@
 # AOC 2024, Day 24, Part 1
 
 # npx dusa src/24a.dusa -f data/day24-test.json -qanswer
+
+#lazy op
+op "1" "AND" "1" is "1".
+op "0" "AND" _   is "0".
+op _   "AND" "0" is "0".
+op "1" "OR"  _   is "1".
+op _   "OR"  "1" is "1".
+op "0" "OR"  "0" is "0".
+op X   "XOR" X   is "0".
+op X   "XOR" X'  is "1" :- X != X'.
+
+value (wire W) is V :-
+    field R "wire" is W,
+    field R "bool" is V.
+
+value (wire Out) is (op (value (wire In1)) Op (value (wire In2))) :-
+    field R "in1" is In1,
+    field R "op" is Op,
+    field R "in2" is In2,
+    field R "out" is Out.
+    
+wire R is (pair N V) :-
+    field R "name" is N,
+    field R "value" is V.
+
+
+#builtin INT_TIMES times
+#builtin INT_PLUS plus
+#builtin INT_MINUS minus
+maxZ is? N :- wire _ is (pair "z" N).
+#forbid maxZ is N, wire _ is (pair "z" N'), N' > N.
+
+to_num "0" is 0.
+to_num "1" is 1.
+
+accum (plus maxZ 1) is 0.
+accum (minus N 1) is (plus Accum Accum (to_num Bit)) :-
+    accum N is Accum,
+    value (pair "z" (minus N 1)) is Bit.
+answer is (accum 0).
